@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+
+<body>
+    <div class="sidebar">
+        <div class="sidebar-item"><img src="{{ url_for('static', filename='icons/user.png') }}" alt="User Icon"></div>
+        <div class="tabs">
+            <button class="buttons" onclick="showTab('dashboard')">Positions</button>
+            <button class="buttons" onclick="showTab('candidates')">Candidates</button>
+            <button class="buttons" onclick="showTab('companies')">Companies</button>
+        </div>
+    </div>
+    <div class="main-content">
+        <div class="header">
+            <h3 class="logo"><img src="{{ url_for('static', filename='icons/bee_recruiters_logo.jpeg') }}"></h3>
+            <input class="search" type="text" id="searchInput" placeholder="Search...">
+        </div>
+        <!-- Dashboard Tab -->
+        <div id="dashboard" class="tab-content" style="display: block;">
+            <div class="dashboard">
+                <div class="dashboard-item">
+                    <h3>Active Candidates</h3>
+                    <p id="activeCandidates" class="number">0</p>
+                    <p class="percentage">+0% from last month</p>
+                </div>
+                <div class="dashboard-item">
+                    <h3>Passive Candidates</h3>
+                    <p id="passiveCandidates" class="number">0</p>
+                    <p class="percentage">+0% from last month</p>
+                </div>
+                <div class="dashboard-item">
+                    <h3>Open Jobs</h3>
+                    <p class="number">87</p>
+                    <p class="percentage">+3.1% from last month</p>
+                </div>
+                <div class="dashboard-item">
+                    <h3>Recent Applications</h3>
+                    <p class="number">245</p>
+                    <p class="percentage">+12% from last month</p>
+                </div>
+                <div class="dashboard-item">
+                    <h3>Hiring Progress</h3>
+                    <p class="number">78%</p>
+                    <p class="percentage"></p>
+                </div>
+            </div>
+        </div>
+        <!-- Candidates Tab -->
+        <div id="candidates" class="tab-content" style="display: none;">
+            <button class="buttons" onclick="showTab('addCandidate')">Add Candidate</button>
+            <div class="list">
+                <h3>Candidates</h3>
+                <div id="candidatesList">
+                    <!-- Candidates will be dynamically added here -->
+                </div>
+            </div>
+        </div>
+        <!-- Add Candidate Tab -->
+        <div id="addCandidate" class="tab-content" style="display: none;">
+            <form id="addCandidateForm" onsubmit="event.preventDefault(); addCandidate();">
+                <h3>Add Candidate</h3>
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input type="text" id="name" placeholder="Enter candidate name" required>
+                </div>
+                <div class="form-group">
+                    <label for="surname">Surname</label>
+                    <input type="text" id="surname" placeholder="Enter candidate surname" required>
+                </div>
+                <div class="form-group">
+                    <label for="role">Role</label>
+                    <input type="text" id="role" placeholder="Enter candidate role" required>
+                </div>
+                <div class="form-group">
+                    <label for="status">Status</label>
+                    <select id="status" required>
+                        <option value="" disabled selected>Select candidate status</option>
+                        <option value="active">Active</option>
+                        <option value="passive">Passive</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="statusexplanation">Status Explanation</label>
+                    <input type="text" id="statusexplanation" placeholder="Enter status explanation">
+                </div>
+                <div class="form-group">
+                    <label for="notes">Notes</label>
+                    <input type="text" id="notes" placeholder="Enter notes">
+                </div>
+                <div class="form-group">
+                    <label for="company">Company</label>
+                    <select id="company" required>
+                        <option value="" disabled selected>Select company</option>
+                        <!-- Populate this dynamically -->
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="position">Position</label>
+                    <input type="text" id="position" placeholder="Enter position name">
+                </div>
+                <button type="submit">Save Candidate</button>
+            </form>
+        </div>
+        <!-- Companies Tab -->
+        <div id="companies" class="tab-content" style="display: none;">
+            <button class="buttons" onclick="showTab('addCompany')">Add Company</button>
+            <div class="list">
+                <h3>Companies</h3>
+                <div id="companiesList">
+                    <!-- Companies will be dynamically added here -->
+                </div>
+            </div>
+        </div>
+        <!-- Add Company Tab -->
+        <div id="addCompany" class="tab-content" style="display: none;">
+            <form id="addCompanyForm">
+                <h3>Add Company</h3>
+                <div class="form-group">
+                    <label for="companyname">Company Name</label>
+                    <input type="text" id="companyname" placeholder="Enter company name" required>
+                </div>
+                <div class="form-group">
+                    <label for="role">Role</label>
+                    <input type="text" id="role" placeholder="Enter company role" required>
+                </div>
+                <div class="form-group">
+                    <label for="date">Date</label>
+                    <input type="date" id="date" placeholder="Enter date" required>
+                </div>
+                <button type="submit">Save Company</button>
+            </form>
+        </div>
+        <!-- Projects Tab -->
+        <div id="projects" class="tab-content" style="display: none;">
+            <div class="projects-list">
+                <h3>Projects</h3>
+                <div id="projectsList">
+                  <!-- Projects will be dynamically added here -->
+                </div>
+            </div>
+        </div>
+        <!-- Add Project Tab -->
+        <div id="addProject" class="tab-content" style="display: none;">
+            <div class="add-projectbox">
+                <h3>Add Project</h3>
+                <form id="addProjectForm">
+                    <div class="form-group">
+                        <label for="projectName">Project Name</label>
+                        <input type="text" id="projectName" placeholder="Enter project name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="companyName">Company</label>
+                        <input type="text" id="companyName" placeholder="Enter company name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="date">Date</label>
+                        <input type="date" id="date" placeholder="Enter project date" required>
+                    </div>
+                    <button type="submit" class="submit">Save Project</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+
+</html>
